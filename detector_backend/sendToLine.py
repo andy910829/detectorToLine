@@ -8,7 +8,7 @@ class sendToLine:
         self.headers = {'Authorization': 'Bearer NLeJnartwjIp9qYn1CKzFL+l3ttMZa18YoEcsLfsOqdVpPk94MEvVNCGVXmjq3xbRAY2HfwOpHalKtZTxwDRfQTriBUwq3L7T0VSgdO+DtD5taMsIE5wFgfxwiGGaXAthIAjcpAXXIcvDS7CEkDlNAdB04t89/1O/w1cDnyilFU=',
                         'Content-Type': 'application/json'}
         self.body = {
-            'to': 'U33dcbe139d669eb71298956ab6e24a08',
+            'to': 'Uaf01ae08be3ed19057a3e781a105f444',
             'messages': [{
                 'type': 'text',
                 'text': msg
