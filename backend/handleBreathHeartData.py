@@ -73,7 +73,7 @@ class handleBreathHeartData:
             with open(self.csv_file, 'r', newline='') as csv_file:
                 rows = csv.reader(csv_file)
                 for row in rows:
-                    if row[0] in self.data_dict.keys() and not newdata:
+                    if row[0] in self.data_dict.keys():
                         newdata = self.data_dict[str(row[0])]
                         self.data_dict[str(row[0])] = row+newdata
 
