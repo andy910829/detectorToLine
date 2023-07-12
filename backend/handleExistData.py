@@ -71,22 +71,21 @@ class handleExistData:
     def swap(self):
         try:
             change_file = False
-            with open(self.csv_file, 'rw', newline='') as csv_file:
+            with open(self.csv_file, 'r', newline='') as csv_file:
                 rows = csv.reader(csv_file)
                 for row in rows:
                     if len(row) == 0:
                         self.csv_init()
                     elif len(row)>500:
                         change_file = True
-                        break
                     if row[0] in self.data_dict.keys():
                         newdata = self.data_dict[str(row[0])]
                         self.data_dict[str(row[0])] = row+newdata
             if change_file:
                 self.create_new_CSVfile()
-        # except FileNotFoundError:
-        #     f = open(self.csv_file, 'w', newline='')
-        #     f.close()
+        except FileNotFoundError:
+            f = open(self.csv_file, 'w', newline='')
+            f.close()
         except:
             pass
 
