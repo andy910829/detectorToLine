@@ -59,28 +59,38 @@ class handleBreathHeartData:
         with open(self.csv_file, 'w', newline='') as csv_file:
             csv_writer = csv.writer(csv_file)
             for data in self.data_dict.values():
+                print(data)
                 csv_writer.writerow(data)
 
     def swap(self):
-        change_file = False
         try:
-            with open(self.csv_file, 'w', newline='') as csv_file:
-                rows = csv.reader(csv_file)
-                for row in rows:
-                    if len(row) == 0:
-                        self.csv_init()
-                    elif len(row)>500:
-                        change_file = True
-                    if row[0] in self.data_dict.keys():
-                        newdata = self.data_dict[row[0]]
-                        self.data_dict[str(row[0])] = row+newdata
-            if change_file:
-                self.create_new_CSVfile()
+            self.read_csv()
         except FileNotFoundError:
             f = open(self.csv_file, 'w', newline='')
             f.close()
-        except:
-            pass
+            self.read_csv()
+        except IndexError:
+            with open(self.csv_file, 'r', newline='') as csv_file:
+                rows = csv.reader(csv_file)
+                for row in rows:
+                    if row[0] in self.data_dict.keys() and not newdata:
+                        newdata = self.data_dict[str(row[0])]
+                        self.data_dict[str(row[0])] = row+newdata
+
+    def read_csv(self):
+        change_file = False
+        with open(self.csv_file, 'r', newline='') as csv_file:
+            rows = csv.reader(csv_file)
+            for row in rows:
+                if len(row) == 0:
+                    self.csv_init()
+                elif len(row)>500:
+                    change_file = True
+                if row[0] in self.data_dict.keys():
+                    newdata = self.data_dict[row[0]]
+                    self.data_dict[str(row[0])] = row+newdata
+        if change_file:
+            self.create_new_CSVfile()
 
     def cleanList(self):
         for data_list in self.data_dict.values():
