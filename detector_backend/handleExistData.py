@@ -37,12 +37,12 @@ class handleExistData:
         dir_path = f"/var/www/detectorData/{str(self.id)}"
         if not os.path.isdir(dir_path):
             os.makedirs(dir_path)
-        board_info = self.collection.find_one({"borad_id": self.id})
+        board_info = self.collection.find_one({"board_id": self.id})
         if board_info:
             self.csv_file = board_info["current_csv_file"]
         else:
             file_name = uuid.uuid4()
-            self.collection.insert_one({"borad_id": self.id, "current_csv_file": "/var/www/detectorData/"+str(self.id)+"/"+str(file_name)+".csv", "CSV_list":["/var/www/detectorData/"+str(self.id)+"/"+str(file_name)+".csv"]})    
+            self.collection.insert_one({"board_id": self.id, "current_csv_file": "/var/www/detectorData/"+str(self.id)+"/"+str(file_name)+".csv", "CSV_list":["/var/www/detectorData/"+str(self.id)+"/"+str(file_name)+".csv"]})    
             self.csv_file = "/var/www/detectorData/"+str(self.id)+"/"+str(file_name)+".csv"
         try:
             if data[1] == "7":
@@ -68,15 +68,24 @@ class handleExistData:
                 csv_writer.writerow(data)
 
     def swap(self):
-        change_file = False
-        with open(self.csv_file, 'r', newline='') as csv_file:
-            rows = csv.reader(csv_file)
-            for row in rows:
-                if row[0] in self.data_dict.keys():
-                    newdata = self.data_dict[str(row[0])]
-                    self.data_dict[str(row[0])] = row+newdata
-        if change_file:
-            self.create_new_CSVfile()
+        try:
+            change_file = False
+            with open(self.csv_file, 'r', newline='') as csv_file:
+                rows = csv.reader(csv_file)
+                for row in rows:
+                    if len(row) == 0:
+                        self.csv_init()
+                    elif len(row)>50:
+                        change_file = True
+                        break
+                    if row[0] in self.data_dict.keys():
+                        newdata = self.data_dict[str(row[0])]
+                        self.data_dict[str(row[0])] = row+newdata
+            if change_file:
+                self.create_new_CSVfile()
+        except:
+            f = open(self.csv_file, 'w', newline='')
+            f.close()
 
     def cleanList(self):
         for data_list in self.data_dict.values():
@@ -84,17 +93,17 @@ class handleExistData:
 
     def create_new_CSVfile(self):
         self.csv_file = "/var/www/detectorData/"+str(self.id)+"/"+str(uuid.uuid4())+".csv"
-        self.collection.update_many({"borad_id": self.id}, {"$set": {"current_csv_file": self.csv_file}},{"$push": {"CSV_list": self.csv_file}})
+        self.collection.update_many({"board_id": self.id}, {"$set": {"current_csv_file": self.csv_file}},{"$push": {"CSV_list": self.csv_file}})
     
 
-    # def csv_init(self):
-    #     with open('humanExistdata.csv', 'w', newline='') as csv_file:
-    #         csv_writer = csv.writer(csv_file)
-    #         csv_writer.writerow(["speed"])
-    #         csv_writer.writerow(["dis_static"])
-    #         csv_writer.writerow(["static_val"])
-    #         csv_writer.writerow(["dynamic_val"])
-    #         csv_writer.writerow(["dis_move"])
+    def csv_init(self):
+        with open('humanExistdata.csv', 'w', newline='') as csv_file:
+            csv_writer = csv.writer(csv_file)
+            csv_writer.writerow(["speed"])
+            csv_writer.writerow(["dis_static"])
+            csv_writer.writerow(["static_val"])
+            csv_writer.writerow(["dynamic_val"])
+            csv_writer.writerow(["dis_move"])
 
 
 # if __name__ == "__main__":
