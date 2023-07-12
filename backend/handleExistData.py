@@ -71,7 +71,7 @@ class handleExistData:
     def swap(self):
         try:
             change_file = False
-            with open(self.csv_file, 'r', newline='') as csv_file:
+            with open(self.csv_file, 'rw', newline='') as csv_file:
                 rows = csv.reader(csv_file)
                 for row in rows:
                     if len(row) == 0:
@@ -84,9 +84,11 @@ class handleExistData:
                         self.data_dict[str(row[0])] = row+newdata
             if change_file:
                 self.create_new_CSVfile()
-        except FileNotFoundError:
-            f = open(self.csv_file, 'w', newline='')
-            f.close()
+        # except FileNotFoundError:
+        #     f = open(self.csv_file, 'w', newline='')
+        #     f.close()
+        except:
+            pass
 
     def cleanList(self):
         for data_list in self.data_dict.values():
