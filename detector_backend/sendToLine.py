@@ -16,7 +16,7 @@ class sendToLine:
         }
         self.cluster = MongoClient("mongodb://localhost:27017")
         self.db = self.cluster["detector_data"]
-        self.collection = self.db["verification_code"]
+        self.collection = self.db["board"]
 
     def push_msg(self):
         requests.post('https://api.line.me/v2/bot/message/push',
