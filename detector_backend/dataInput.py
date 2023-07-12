@@ -11,7 +11,7 @@ class dataInput:
 
     def process_data(self,data):
         # try:
-        if data[0] == "08":
+        if data[0] == "8":
             self.exist_serial_data.execute(data,self.id)
         else:
             self.breath_serial_data.execute(data,self.id)
