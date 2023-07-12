@@ -1,6 +1,6 @@
 import requests
 import json
-
+from pymongo import MongoClient
 
 class sendToLine:
     def __init__(self,msg):
@@ -14,10 +14,14 @@ class sendToLine:
                 'text': msg
             }]
         }
+        self.cluster = MongoClient("mongodb://localhost:27017")
+        self.db = self.cluster["detector_data"]
+        self.collection = self.db["verification_code"]
 
     def push_msg(self):
         requests.post('https://api.line.me/v2/bot/message/push',
                        headers=self.headers, data=json.dumps(self.body).encode('utf-8'))
+
 
 if __name__ == "__main__":
     sendToLine().push_msg()
