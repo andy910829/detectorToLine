@@ -3,24 +3,25 @@ import handleExistData
 
 class dataInput:
     def __init__(self,data,id):
-        self.breath_serial_data = handleBreathHeartData.handleBreathHeartData()
-        self.exist_serial_data = handleExistData.handleExistData()
+        self.breath_serial_data
+        self.exist_serial_data
         self.data = data
         self.id = id
 
 
-    def process_data(self,data):
-        # try:
-        if data[0] == "8":
-            self.exist_serial_data.execute(data,self.id)
-        else:
-            self.breath_serial_data.execute(data,self.id)
-        # except Exception as e:
-        #     print(e)
+    def process_data(self,data,worker):
+        worker.execute(data,self.id)
 
     def execute(self):
-        for data in self.data:
-            self.process_data(data)
+        datalen = len(self.data)
+        if self.data[0][0] == "8":
+            self.exist_serial_data = handleExistData.handleExistData()
+            for data in self.data:
+                self.exist_serial_data.execute(data,self.id,datalen)
+        else:
+            self.breath_serial_data = handleBreathHeartData.handleBreathHeartData()
+            for data in self.data:
+                self.breath_serial_data.execute(data,self.id,datalen)
 
 # serial_data.write_csv()
 # ser.close()

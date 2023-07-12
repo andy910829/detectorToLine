@@ -25,8 +25,10 @@ class handleBreathHeartData:
         self.id=str()
         self.csv_file = str()
         self.folder_file = "/var/www/detectorData/"
+        self.cnt = 0
 
-    def execute(self, data, id):
+    def execute(self, data, id, dataLen):
+        self.cnt+=1
         self.id = id 
         dir_path = f"{self.folder_file+str(self.id)}"
         if not os.path.isdir(dir_path):
@@ -51,8 +53,9 @@ class handleBreathHeartData:
         except Exception as e:
             pass
         finally:
-            self.write_csv()
-            self.cleanList()
+            if self.cnt == dataLen:
+                self.write_csv()
+                self.cleanList()
 
     def write_csv(self):
         self.swap()
@@ -97,8 +100,8 @@ class handleBreathHeartData:
             data_list.clear()
 
     def create_new_CSVfile(self):
-        self.csv_file = self.folder_file+str(self.id)+"/"+str(uuid.uuid4())+".csv"
-        self.collection.update_many({"board_id": self.id}, {"$set": {"current_csv_file": self.csv_file},"$push": {"CSV_list": self.csv_file}})
+        file_name = self.folder_file+str(self.id)+"/"+str(uuid.uuid4())+".csv"
+        self.collection.update_many({"board_id": self.id}, {"$set": {"current_csv_file": file_name},"$push": {"CSV_list": file_name}})
     
     def csv_init(self):
         with open(self.csv_file, 'w', newline='') as csv_file:
