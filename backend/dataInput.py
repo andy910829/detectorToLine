@@ -3,14 +3,11 @@ import handleExistData
 
 class dataInput:
     def __init__(self,data,id):
-        self.breath_serial_data
-        self.exist_serial_data
+        self.breath_serial_data=None
+        self.exist_serial_data=None
         self.data = data
         self.id = id
 
-
-    def process_data(self,data,worker):
-        worker.execute(data,self.id)
 
     def execute(self):
         datalen = len(self.data)
