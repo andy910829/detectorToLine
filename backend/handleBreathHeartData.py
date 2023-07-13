@@ -62,7 +62,6 @@ class handleBreathHeartData:
         with open(self.csv_file, 'w', newline='') as csv_file:
             csv_writer = csv.writer(csv_file)
             for data in self.data_dict.values():
-                print(data)
                 csv_writer.writerow(data)
 
     def swap(self):
@@ -84,10 +83,13 @@ class handleBreathHeartData:
         change_file = False
         with open(self.csv_file, 'r', newline='') as csv_file:
             rows = csv.reader(csv_file)
+            rows_len = len(list(rows))
+            if rows_len == 0:
+                self.csv_init()
+            csv_file.seek(0)
             for row in rows:
-                if len(row) == 0:
-                    self.csv_init()
-                elif len(row)>500:
+                print(len(row))
+                if len(row)>500:
                     change_file = True
                 if row[0] in self.data_dict.keys():
                     newdata = self.data_dict[row[0]]

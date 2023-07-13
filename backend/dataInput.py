@@ -15,10 +15,12 @@ class dataInput:
             self.exist_serial_data = handleExistData.handleExistData()
             for data in self.data:
                 self.exist_serial_data.execute(data,self.id,datalen)
-        else:
+        elif self.data[0][0] == "80" or self.data[0][0] == "81" or self.data[0][0] == "85":
             self.breath_serial_data = handleBreathHeartData.handleBreathHeartData()
             for data in self.data:
                 self.breath_serial_data.execute(data,self.id,datalen)
+        else:
+            pass
 
 # serial_data.write_csv()
 # ser.close()

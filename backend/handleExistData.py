@@ -69,20 +69,24 @@ class handleExistData:
         with open(self.csv_file, 'w', newline='') as csv_file:
             csv_writer = csv.writer(csv_file)
             for data in self.data_dict.values():
-                print(data)
+                # print(data)
                 csv_writer.writerow(data)
 
     def swap(self):
         try:
+            # print("try")
             self.read_csv()
         except FileNotFoundError:
+            # print("except FileNotFoundError")
             f = open(self.csv_file, 'w', newline='')
             f.close()
             self.read_csv()
         except IndexError:
+            # print("except IndexError")
             with open(self.csv_file, 'r', newline='') as csv_file:
                 rows = csv.reader(csv_file)
                 for row in rows:
+                    # print(row[0])
                     if row[0] in self.data_dict.keys():
                         newdata = self.data_dict[str(row[0])]
                         self.data_dict[str(row[0])] = row+newdata
@@ -90,10 +94,12 @@ class handleExistData:
         change_file = False
         with open(self.csv_file, 'r', newline='') as csv_file:
             rows = csv.reader(csv_file)
+            rows_len = len(list(rows))
+            if rows_len == 0:
+                self.csv_init()
+            csv_file.seek(0)
             for row in rows:
-                if len(row) == 0:
-                    self.csv_init()
-                elif len(row)>500:
+                if len(row)>500:
                     change_file = True
                 if row[0] in self.data_dict.keys():
                     newdata = self.data_dict[row[0]]

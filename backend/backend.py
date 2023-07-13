@@ -18,7 +18,7 @@ def test():
     return jsonify({"status":"ok"})
 
 if __name__ == "__main__":
-    app.run(host="172.20.10.13",port='8000')
+    app.run(host="172.20.10.11",port='8000')
     #app.run(host="192.168.137.179",port='8000')
 
 
